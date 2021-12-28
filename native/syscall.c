@@ -63,7 +63,7 @@ static napi_status syscall_done(napi_env env, void* opaque, napi_deferred deferr
   return napi_ok;
 }
 
-static napi_status syscall_entry(napi_env env, napi_value* args, int arg_count, napi_value* result) {
+static napi_status syscall_async_entry(napi_env env, napi_value* args, int arg_count, napi_value* result) {
   int i;
   struct syscall_ctx* ctx = (struct syscall_ctx*) malloc(sizeof(*ctx));
   memset(ctx, 0, sizeof(*ctx));
@@ -103,6 +103,55 @@ static napi_status syscall_entry(napi_env env, napi_value* args, int arg_count, 
     ctx,
     result
   ));
+
+  return napi_ok;
+}
+
+static napi_status syscall_sync_entry(napi_env env, napi_value* args, int arg_count, napi_value* result) {
+  int i;
+  struct syscall_ctx ctx;
+  memset(&ctx, 0, sizeof(ctx));
+
+  if(arg_count < 1) {
+    return napi_throw_error(env, NULL, "minimum required argument count for syscall() is 1");
+  }
+
+  if(arg_count > 8) {
+    return napi_throw_error(env, NULL, "maximum supported argument count for syscall() is 8");
+  }
+
+  NAPILIB_CHECK(napilib_require_bigint_int64(env, args[0], &ctx.num));
+
+  for(i = 1; i < arg_count; i += 1) {
+    int arg_idx = i - 1;
+    bool is_buffer = 0;
+
+    NAPILIB_CHECK(napi_is_buffer(env, args[i], &is_buffer));
+    if(is_buffer) {
+      void* data;
+      size_t length;
+
+      NAPILIB_CHECK(napi_get_buffer_info(env, args[i], &data, &length));
+      ctx.native_args[arg_idx] = (long) data;
+    } else {
+      NAPILIB_CHECK(napilib_require_bigint_int64(env, args[i], &ctx.native_args[arg_idx]));
+    }
+  }
+
+  ctx.res = syscall(ctx.num,
+                    ctx.native_args[0],
+                    ctx.native_args[1],
+                    ctx.native_args[2],
+                    ctx.native_args[3],
+                    ctx.native_args[4],
+                    ctx.native_args[5],
+                    ctx.native_args[6]);
+
+  if(ctx.res < 0) {
+    NAPILIB_CHECK(napilib_create_error_by_errno(env, errno, result));
+  } else {
+    NAPILIB_CHECK(napi_create_bigint_int64(env, ctx.res, result));
+  }
 
   return napi_ok;
 }
@@ -385,7 +434,8 @@ static napi_status create_module_instance(napi_env env, napi_value* res) {
   NAPILIB_CHECK(napi_create_object(env, &exports));
 
   NAPILIB_CHECK(add_syscall_constants_to(env, exports));
-  NAPILIB_CHECK(napilib_set_named_simple_function_property(env, exports, "syscall", syscall_entry));
+  NAPILIB_CHECK(napilib_set_named_simple_function_property(env, exports, "syscall_async", syscall_async_entry));
+  NAPILIB_CHECK(napilib_set_named_simple_function_property(env, exports, "syscall_sync", syscall_sync_entry));
 
   *res = exports;
 
