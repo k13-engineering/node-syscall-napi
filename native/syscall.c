@@ -148,7 +148,9 @@ static napi_status syscall_sync_entry(napi_env env, napi_value* args, int arg_co
                     ctx.native_args[6]);
 
   if(ctx.res < 0) {
-    NAPILIB_CHECK(napilib_create_error_by_errno(env, errno, result));
+    napi_value error;
+    NAPILIB_CHECK(napilib_create_error_by_errno(env, errno, &error));
+    NAPILIB_CHECK(napi_throw(env, error));
   } else {
     NAPILIB_CHECK(napi_create_bigint_int64(env, ctx.res, result));
   }
