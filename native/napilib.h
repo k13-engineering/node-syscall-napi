@@ -51,15 +51,6 @@ static napi_status napilib_throw_error_by_errno(napi_env env, int err) {
   return napi_pending_exception;
 }
 
-static napi_status napilib_set_named_bigint_int64_property(napi_env env, napi_value obj, const char* property_name, int64_t value) {
-  napi_value bigint_int64_val;
-
-  NAPILIB_CHECK(napi_create_bigint_int64(env, value, &bigint_int64_val));
-  NAPILIB_CHECK(napi_set_named_property(env, obj, property_name, bigint_int64_val));
-
-  return napi_ok;
-}
-
 typedef void (*napilib_work_t)(void* opaque);
 typedef napi_status (*napilib_work_done_t)(napi_env env, void* opaque, napi_deferred deferred);
 
@@ -176,19 +167,6 @@ static napi_status napilib_set_named_simple_function_property(napi_env env, napi
 
   return napi_ok;
 }
-
-// static napi_status napilib_throw_simple_error(napi_env env, const char* message) {
-//   napi_value code;
-//   napi_value message;
-//   napi_value error;
-//   napi_status status;
-//
-//   NAPILIB_CHECK(napi_create_string_utf8(env, "", -1, &code));
-//   NAPILIB_CHECK(napi_create_string_utf8(env, strerror(error_code), -1, &message));
-//   NAPILIB_CHECK(napi_create_error(env, code, message, &error));
-//
-//   return napi_pending_exception;
-// }
 
 static napi_status napilib_require_bigint_int64(napi_env env, napi_value value, int64_t* result) {
   napi_status status;
