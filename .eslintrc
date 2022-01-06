@@ -6,11 +6,13 @@
   },
   "env": {
     "node": true,
-    "es6": true
+    "es2020": true
   },
   "rules": {
     "global-require": "off",
-    "quote-props": "warn",
+    "quote-props": ["warn", "consistent-as-needed"],
+    "comma-dangle": ["error", {"arrays": "always-multiline", "objects": "always-multiline", "functions": "never"}],
+    "id-length": ["error", {"min": 2, "properties": "always", "exceptions": ["i"]}],
     "quotes": ["error", "double", { "allowTemplateLiterals": true }],
     "no-plusplus": "error",
     "no-nested-ternary": "error",
@@ -21,6 +23,8 @@
     "no-delete-var": "error",
     "no-param-reassign": "error",
     "no-return-assign": "error",
+    "no-import-assign": "error",
+    "no-multi-assign": "error",
     "keyword-spacing": "error",
     "max-len": [ "warn", { "code": 140 } ],
     "max-params": ["error", 4],
@@ -46,6 +50,7 @@
     "no-new-object": "error",
     "no-new-wrappers": "error",
     "no-useless-concat": "error",
+    "no-unused-vars": ["error", {"ignoreRestSiblings": true}],
     "array-bracket-newline": ["error", "consistent"],
     "func-names": ["error", "never"],
     "func-style": ["error", "expression", { "allowArrowFunctions": true }],
@@ -53,7 +58,6 @@
     "arrow-parens": "error",
     "no-confusing-arrow": "error",
     "prefer-const": "error",
-    "prefer-destructuring": ["error", {"object": true, "array": false}],
     "rest-spread-spacing": ["error", "never"],
     "template-curly-spacing": ["error", "never"],
     "prefer-rest-params": "error",
