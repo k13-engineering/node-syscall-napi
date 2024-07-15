@@ -23,5 +23,8 @@
     "c8": "^10.1.2",
     "eslint": "^9.7.0",
     "mocha": "^10.6.0"
+  },
+  "dependencies": {
+    "node-archibald": "^0.0.6"
   }
 }
