@@ -20,7 +20,7 @@ jobs:
           node-version: '15'
       - uses: docker/setup-qemu-action@v1
       - name: Install dependencies
-        run: npm install
+        run: npm ci
       - name: Run tests
         run: node_modules/.bin/archibald -p -a ${{ matrix.arch }} -n ${{ matrix.node }} .
 
@@ -34,6 +34,6 @@ jobs:
         with:
           node-version: '15'
       - name: Install dependencies
-        run: npm install
+        run: npm ci
       - name: Verify code with ESLint
         run: npm run eslint
