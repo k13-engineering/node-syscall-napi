@@ -30,6 +30,9 @@ static void syscall_work(void* opaque) {
 static napi_status syscall_done(napi_env env, void* opaque, napi_deferred deferred) {
   struct syscall_ctx* ctx = (struct syscall_ctx*) opaque;
   long res = ctx->res;
+  napi_value result;
+  napi_value js_errno;
+  napi_value js_ret;
   unsigned int i;
 
   for(i = 0; i < sizeof(ctx->arg_refs) / sizeof(ctx->arg_refs[0]); i += 1) {
@@ -41,9 +44,19 @@ static napi_status syscall_done(napi_env env, void* opaque, napi_deferred deferr
 
   free(ctx);
 
-  napi_value result;
+  NAPILIB_CHECK(napi_create_object(env, &result));
 
-  NAPILIB_CHECK(napi_create_bigint_int64(env, res, &result));
+  if (res < 0) {
+    NAPILIB_CHECK(napi_create_int32(env, errno, &js_errno));
+    NAPILIB_CHECK(napi_set_named_property(env, result, "errno", js_errno));
+  } else {
+    NAPILIB_CHECK(napi_create_int32(env, 0, &js_errno));
+    NAPILIB_CHECK(napi_set_named_property(env, result, "errno", js_errno));
+
+    NAPILIB_CHECK(napi_create_bigint_int64(env, res, &js_ret));
+    NAPILIB_CHECK(napi_set_named_property(env, result, "ret", js_ret));
+  }
+
   NAPILIB_CHECK(napi_resolve_deferred(env, deferred, result));
 
   return napi_ok;
@@ -93,8 +106,11 @@ static napi_status syscall_async_entry(napi_env env, napi_value* args, int arg_c
   return napi_ok;
 }
 
-static napi_status syscall_sync_entry(napi_env env, napi_value* args, int arg_count, napi_value* result) {
+static napi_status syscall_sync_entry(napi_env env, napi_value* args, int arg_count, napi_value* result_ptr) {
   int i;
+  napi_value result;
+  napi_value js_errno;
+  napi_value js_ret;
   struct syscall_ctx ctx;
   memset(&ctx, 0, sizeof(ctx));
 
@@ -133,7 +149,20 @@ static napi_status syscall_sync_entry(napi_env env, napi_value* args, int arg_co
                     ctx.native_args[5],
                     ctx.native_args[6]);
 
-  NAPILIB_CHECK(napi_create_bigint_int64(env, ctx.res, result));  
+  NAPILIB_CHECK(napi_create_object(env, &result));
+
+  if (ctx.res < 0) {
+    NAPILIB_CHECK(napi_create_int32(env, errno, &js_errno));
+    NAPILIB_CHECK(napi_set_named_property(env, result, "errno", js_errno));
+  } else {
+    NAPILIB_CHECK(napi_create_int32(env, 0, &js_errno));
+    NAPILIB_CHECK(napi_set_named_property(env, result, "errno", js_errno));
+
+    NAPILIB_CHECK(napi_create_bigint_int64(env, ctx.res, &js_ret));
+    NAPILIB_CHECK(napi_set_named_property(env, result, "ret", js_ret));
+  }
+
+  *result_ptr = result;
   
   return napi_ok;
 }
