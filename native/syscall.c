@@ -11,7 +11,6 @@ struct syscall_ctx {
   long num;
   long native_args[7];
   long res;
-  long error_code;
   napi_ref arg_refs[7];
 };
 
@@ -26,17 +25,11 @@ static void syscall_work(void* opaque) {
                      ctx->native_args[4],
                      ctx->native_args[5],
                      ctx->native_args[6]);
-  if(ctx->res < 0) {
-    ctx->error_code = errno;
-  } else {
-    ctx->error_code = 0;
-  }
 }
 
 static napi_status syscall_done(napi_env env, void* opaque, napi_deferred deferred) {
   struct syscall_ctx* ctx = (struct syscall_ctx*) opaque;
   long res = ctx->res;
-  long error_code = ctx->error_code;
   unsigned int i;
 
   for(i = 0; i < sizeof(ctx->arg_refs) / sizeof(ctx->arg_refs[0]); i += 1) {
@@ -48,17 +41,10 @@ static napi_status syscall_done(napi_env env, void* opaque, napi_deferred deferr
 
   free(ctx);
 
-  if(res < 0) {
-    napi_value error;
+  napi_value result;
 
-    NAPILIB_CHECK(napilib_create_error_by_errno(env, error_code, &error));
-    NAPILIB_CHECK(napi_reject_deferred(env, deferred, error));
-  } else {
-    napi_value result;
-
-    NAPILIB_CHECK(napi_create_bigint_int64(env, res, &result));
-    NAPILIB_CHECK(napi_resolve_deferred(env, deferred, result));
-  }
+  NAPILIB_CHECK(napi_create_bigint_int64(env, res, &result));
+  NAPILIB_CHECK(napi_resolve_deferred(env, deferred, result));
 
   return napi_ok;
 }
@@ -147,14 +133,8 @@ static napi_status syscall_sync_entry(napi_env env, napi_value* args, int arg_co
                     ctx.native_args[5],
                     ctx.native_args[6]);
 
-  if(ctx.res < 0) {
-    napi_value error;
-    NAPILIB_CHECK(napilib_create_error_by_errno(env, errno, &error));
-    NAPILIB_CHECK(napi_throw(env, error));
-  } else {
-    NAPILIB_CHECK(napi_create_bigint_int64(env, ctx.res, result));
-  }
-
+  NAPILIB_CHECK(napi_create_bigint_int64(env, ctx.res, result));  
+  
   return napi_ok;
 }
 

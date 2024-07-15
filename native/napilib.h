@@ -30,22 +30,6 @@ static napi_status napilib_maybe_throw_by_status(napi_env env, napi_status statu
 #define NAPILIB_CHECK(x) do { napi_status ret = x; if(ret != napi_ok) { return napilib_maybe_throw_by_status(env, ret); } } while(0)
 #define NAPILIB_CHECK_GOTO_FAIL(x) if((x) != napi_ok) { goto fail; }
 
-static napi_status napilib_create_error_by_errno(napi_env env, int err, napi_value* error) {
-  napi_value code;
-  napi_value message;
-  char c_message[512];
-
-  const char* orig_err = strerror(err);
-
-  snprintf(c_message, sizeof(c_message), "%s", orig_err);
-
-  NAPILIB_CHECK(napi_create_string_utf8(env, "", NAPI_AUTO_LENGTH, &code));
-  NAPILIB_CHECK(napi_create_string_utf8(env, c_message, NAPI_AUTO_LENGTH, &message));
-  NAPILIB_CHECK(napi_create_error(env, code, message, error));
-
-  return napi_ok;
-}
-
 static napi_status napilib_throw_error_by_errno(napi_env env, int err) {
   NAPILIB_CHECK(napi_throw_error(env, "", strerror(err)));
   return napi_pending_exception;
