@@ -24,7 +24,7 @@ yarn install syscall-napi
 
 ## API
 
-### `sys.syscall(...params)` => `BigInt`
+### `sys.syscall(...params)` => `{ errno: number, ret?: BigInt }`
 
 Supported argument types:
   - `BigInt` arguments are converted to native integers
