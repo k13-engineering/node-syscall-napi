@@ -1,9 +1,0 @@
-FROM arm64v8/node:15
-
-COPY --chown=node . /home/node/app/
-
-USER node
-WORKDIR /home/node/app
-
-RUN gcc main.c -o main
-CMD ./main
