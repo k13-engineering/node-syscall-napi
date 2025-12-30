@@ -1,35 +1,18 @@
 {
-  "name": "syscall-napi",
   "type": "module",
-  "version": "0.1.2",
-  "description": "Node.js module to perform synchronous syscalls",
   "main": "lib/index.ts",
   "scripts": {
+    "build": "rm -rf dist/ && deno-node-build --root . --out dist/ --entry lib/index.ts",
     "test": "c8 --reporter lcov --reporter html --reporter text mocha test/**/*.ts",
     "eslint": "eslint ."
   },
-  "files": [
-    "lib/**/*",
-    "native/**/*",
-    "samples/**/*",
-    "binding.gyp"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/k13-engineering/node-syscall-napi.git"
-  },
-  "keywords": [],
-  "author": "Simon Kadisch",
-  "license": "LGPL 2.1",
-  "bugs": {
-    "url": "https://github.com/k13-engineering/node-syscall-napi/issues"
-  },
-  "homepage": "https://github.com/k13-engineering/node-syscall-napi#readme",
   "devDependencies": {
     "@eslint/js": "^9.39.2",
+    "@k13engineering/releasetool": "^0.0.1",
     "@types/mocha": "^10.0.10",
     "@types/node": "^25.0.3",
     "c8": "^10.1.3",
+    "deno-node": "^0.0.12",
     "eslint": "^9.39.2",
     "mocha": "^11.7.1",
     "node-archibald": "^0.0.7",

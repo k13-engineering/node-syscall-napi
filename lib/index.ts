@@ -1,17 +1,5 @@
 import { syscallNumbers } from "./constants/index.ts";
-
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
-
-let native;
-
-try {
-  native = require("../build/Release/syscall.node");
-} catch {
-  native = require("../build/Debug/syscall.node");
-}
-
-const { syscall_sync } = native;
+import { syscall_sync } from "./native.ts";
 
 type TSyscallResult = {
   errno: undefined;
@@ -35,6 +23,11 @@ const syscall = ({
       errno,
       ret: undefined
     };
+  }
+
+  // mainly for TypeScript type narrowing
+  if (ret === undefined) {
+    throw new Error("syscall returned undefined ret with errno 0");
   }
 
   return {

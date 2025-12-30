@@ -1,0 +1,23 @@
+{
+  "name": "syscall-napi",
+  "type": "module",
+  "version": "0.1.2",
+  "description": "Node.js module to perform synchronous syscalls",
+  "main": "dist/lib/index.js",
+  "files": [
+    "dist/**/*",
+    "native/**/*",
+    "binding.gyp"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/k13-engineering/node-syscall-napi.git"
+  },
+  "keywords": [],
+  "author": "Simon Kadisch",
+  "license": "LGPL 2.1",
+  "bugs": {
+    "url": "https://github.com/k13-engineering/node-syscall-napi/issues"
+  },
+  "homepage": "https://github.com/k13-engineering/node-syscall-napi#readme"
+}
