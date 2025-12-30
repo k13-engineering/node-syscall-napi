@@ -1,7 +1,7 @@
 {
   "name": "syscall-napi",
   "type": "module",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "Node.js module to perform synchronous syscalls",
   "main": "lib/index.ts",
   "scripts": {
