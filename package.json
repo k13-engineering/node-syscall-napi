@@ -2,7 +2,7 @@
   "name": "syscall-napi",
   "type": "module",
   "version": "0.0.9",
-  "description": "Node.js module to perform promise-based asynchronous syscalls",
+  "description": "Node.js module to perform synchronous syscalls",
   "main": "lib/index.ts",
   "scripts": {
     "test": "c8 --reporter lcov --reporter html --reporter text mocha test/**/*.ts",
