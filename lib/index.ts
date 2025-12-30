@@ -1,4 +1,4 @@
-import constants from "./constants/index.js";
+import constants from "./constants/index.ts";
 
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
@@ -13,7 +13,7 @@ try {
 
 const { syscall_sync } = native;
 
-const syscall = (...args) => {
+const syscall = (...args: (BigInt | Buffer)[]) => {
   return syscall_sync(...args);
 };
 

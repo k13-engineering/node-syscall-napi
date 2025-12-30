@@ -2,7 +2,7 @@
 /* global it */
 
 import assert from "assert";
-import sys from "../lib/index.js";
+import sys from "../lib/index.ts";
 
 describe("basic", () => {
   it("should run getpid() correctly", () => {

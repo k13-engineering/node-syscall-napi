@@ -1,4 +1,4 @@
-import sys from "../lib/index.js";
+import sys from "../lib/index.ts";
 
 process.nextTick(async () => {
   try {

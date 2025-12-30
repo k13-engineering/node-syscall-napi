@@ -14,6 +14,6 @@ generateConstants() {
 # change to the script directory
 cd "$(dirname "$0")"
 
-generateConstants linux/amd64 ../../lib/constants/x64.js
-generateConstants linux/arm64 ../../lib/constants/arm64.js
-generateConstants linux/arm ../../lib/constants/arm.js
+generateConstants linux/amd64 ../../lib/constants/x64.ts
+generateConstants linux/arm64 ../../lib/constants/arm64.ts
+generateConstants linux/arm ../../lib/constants/arm.ts
