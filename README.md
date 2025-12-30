@@ -8,7 +8,7 @@ This module allows to execute syscalls on linux based systems. NAPI is being use
 
 ## Requirements
 
-- `Node.js >= 12` as ES6 modules are used.
+- `Node.js >= 22` as this is a native TypeScript module
 
 ## Installation
 
@@ -24,7 +24,7 @@ yarn install syscall-napi
 
 ## API
 
-### `sys.syscall(...params)` => `{ errno: number, ret?: BigInt }`
+### `syscall({ syscallNumber: bigint, args: (bigint | Uint8Array)[] })` => `{ errno: undefined, ret: BigInt } | { errno: number, ret: undefined }`
 
 Supported argument types:
   - `BigInt` arguments are converted to native integers
@@ -34,19 +34,22 @@ In case of an error the promise is rejected with an error object.
 
 For params see `man 2 syscall`.
   
-### `sys.__NR_xxx`
+### `syscallNumbers.__NR_xxx`
 This module provides syscall numbers (e.g. `__NR_getpid`) that are defined in `uapi/asm-generic/unistd.h` in the linux kernel.
 
 ## Minimal example
 
 ```javascript
-import sys from "syscall-napi";
+import { syscall, syscallNumbers } from "syscall-napi";
 
-try {
-  const pid = sys.syscall(sys.__NR_getpid);
+const { errno, ret: pid } = syscall({
+  syscallNumber: syscallNumbers.__NR_getpid,
+  args: []
+});
+
+if (errno === undefined) {
   console.log(`pid = ${pid}`);
-} catch (ex) {
-  console.error(ex);
-  process.exitCode = -1;
+} else {
+  console.log(`errno = ${errno}`);
 }
 ```

@@ -1,11 +1,12 @@
-import sys from "../lib/index.ts";
+import { syscall, syscallNumbers } from "../lib/index.ts";
 
-process.nextTick(async () => {
-  try {
-    const pid = sys.syscall(sys.__NR_getpid);
-    console.log(`pid = ${pid}`);
-  } catch (ex) {
-    console.error(ex);
-    process.exitCode = -1;
-  }
+const { errno, ret: pid } = syscall({
+  syscallNumber: syscallNumbers.__NR_getpid,
+  args: []
 });
+
+if (errno === undefined) {
+  console.log(`pid = ${pid}`);
+} else {
+  console.log(`errno = ${errno}`);
+}

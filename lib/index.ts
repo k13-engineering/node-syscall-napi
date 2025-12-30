@@ -1,4 +1,4 @@
-import constants from "./constants/index.ts";
+import { syscallNumbers } from "./constants/index.ts";
 
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
@@ -13,11 +13,37 @@ try {
 
 const { syscall_sync } = native;
 
-const syscall = (...args: (BigInt | Buffer)[]) => {
-  return syscall_sync(...args);
+type TSyscallResult = {
+  errno: undefined;
+  ret: bigint;
+} | {
+  errno: number;
+  ret: undefined;
+}
+
+const syscall = ({
+  syscallNumber,
+  args
+}: {
+  syscallNumber: bigint;
+  args: (bigint | Uint8Array)[];
+}): TSyscallResult => {
+  const { errno, ret } = syscall_sync(syscallNumber, ...args);
+
+  if (errno !== 0) {
+    return {
+      errno,
+      ret: undefined
+    };
+  }
+
+  return {
+    errno: undefined,
+    ret
+  };
 };
 
-export default {
+export {
   syscall,
-  ...constants,
+  syscallNumbers
 };
