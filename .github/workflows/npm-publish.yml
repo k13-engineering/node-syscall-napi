@@ -1,0 +1,28 @@
+name: Publish Package to npmjs
+on:
+  push:
+    tags:
+      - '*'
+
+permissions:
+  id-token: write  # Required for OIDC
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      # Setup .npmrc file to publish to npm
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm ci
+      - run: npm run build
+      - run: node node_modules/.bin/releasetool merge --local-package-json package.json --npm-package-json package.json.npm --output package.json
+      - run: node node_modules/.bin/releasetool patch-version --package-json package.json --package-version ${{ github.ref_name }}
+      - run: npm publish
