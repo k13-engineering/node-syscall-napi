@@ -4,7 +4,7 @@
   "scripts": {
     "build": "rm -rf dist/ && deno-node-build --root . --out dist/ --entry lib/index.ts",
     "test": "c8 --reporter lcov --reporter html --reporter text mocha test/**/*.ts",
-    "eslint": "eslint ."
+    "lint": "eslint ."
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
