@@ -25,9 +25,9 @@ jobs:
       - name: Run tests
         run: node_modules/.bin/archibald -p -a ${{ matrix.arch }} -n ${{ matrix.node }} .
 
-  linter:
+  ci:
     runs-on: ubuntu-latest
-    name: linter
+    name: Continous integration tests
 
     steps:
       - uses: actions/checkout@v2
