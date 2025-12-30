@@ -1,7 +1,7 @@
 import { syscall, syscallNumbers } from "../lib/index.ts";
 
 const { errno, ret: pid } = syscall({
-  syscallNumber: syscallNumbers.__NR_getpid,
+  syscallNumber: syscallNumbers.getpid,
   args: []
 });
 

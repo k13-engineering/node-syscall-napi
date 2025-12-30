@@ -34,8 +34,8 @@ In case of an error the promise is rejected with an error object.
 
 For params see `man 2 syscall`.
   
-### `syscallNumbers.__NR_xxx`
-This module provides syscall numbers (e.g. `__NR_getpid`) that are defined in `uapi/asm-generic/unistd.h` in the linux kernel.
+### `syscallNumbers.{syscall}`
+This module provides syscall numbers (e.g. `getpid`) that are defined in `uapi/asm-generic/unistd.h` in the linux kernel.
 
 ## Minimal example
 
