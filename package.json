@@ -8,6 +8,11 @@
     "test": "c8 --reporter lcov --reporter html --reporter text mocha test/**/*.ts",
     "eslint": "eslint ."
   },
+  "files": [
+    "lib/**/*",
+    "native/**/*",
+    "samples/**/*"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/k13-engineering/node-syscall-napi.git"
