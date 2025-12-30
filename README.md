@@ -1,5 +1,5 @@
 # node-syscall-napi
-Node.js module to perform promise-based asynchronous syscalls
+Node.js module to perform synchronous syscalls
 
 
 ## About
