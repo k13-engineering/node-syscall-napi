@@ -2,7 +2,7 @@ import { createNativeAddonLoader } from "./snippets/native-loader.ts";
 
 const nativeAddonLoader = createNativeAddonLoader();
 const native = nativeAddonLoader.loadRelativeToPackageRoot({
-    relativeBuildFolderPath: "./build"
+  relativeBuildFolderPath: "./build"
 });
 
 type TSyscallSync = (args: bigint, ...rest: (bigint | Uint8Array)[]) => { errno: number; ret?: bigint; };
@@ -10,5 +10,5 @@ type TSyscallSync = (args: bigint, ...rest: (bigint | Uint8Array)[]) => { errno:
 const syscall_sync = native.syscall_sync as TSyscallSync;
 
 export {
-    syscall_sync
+  syscall_sync
 };
