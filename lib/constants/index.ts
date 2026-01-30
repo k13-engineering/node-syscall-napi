@@ -25,7 +25,7 @@ if (syscallNumbersOfArch === undefined) {
   throw Error(`unsupported architecture: ${nodeProcess.arch}`);
 }
 
-const syscallNumbers = syscallNumbersOfArch!;
+const syscallNumbers: TSyscallConstants = syscallNumbersOfArch;
 
 export {
   syscallNumbers
