@@ -5,6 +5,9 @@
     "moduleResolution": "NodeNext",
     "noEmit": true,
     "esModuleInterop": true,
-    "strict": true
+    "strict": true,
+    "verbatimModuleSyntax": true,
+    "types": ["node", "mocha"],
+    "skipLibCheck": true
   }
 }

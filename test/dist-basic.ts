@@ -1,10 +1,8 @@
-/* global describe */
-/* global it */
-
 import assert from "assert";
 import { existsSync } from "fs";
 import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
+import { describe, it } from "mocha";
 
 const distDir = resolve(dirname(fileURLToPath(import.meta.url)), "../dist");
 const hasDistDir = existsSync(distDir);

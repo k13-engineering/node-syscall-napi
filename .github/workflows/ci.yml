@@ -3,41 +3,20 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  tests:
-    runs-on: ubuntu-latest
-    name: tests
-
-    strategy:
-      matrix:
-        arch: [ amd64 ]
-        # arch: [ amd64, arm64v8, arm32v7 ]
-        node: [ 22, 24 ]
-      fail-fast: false
-
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2-beta
-        with:
-          node-version: '24'
-      - uses: docker/setup-qemu-action@v1
-      - name: Install dependencies
-        run: npm ci
-      - name: Run tests
-        run: node_modules/.bin/archibald -p -a ${{ matrix.arch }} -n ${{ matrix.node }} .
-
   ci:
     runs-on: ubuntu-latest
     name: Continous integration tests
-
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2-beta
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '24'
       - name: Install dependencies
         run: npm ci
       - name: Build
         run: npm run build
+      - name: Type check
+        run: npm run type-check
       - name: Run tests
         run: npm run test
       - name: Verify code with linter

@@ -27,7 +27,7 @@ const syscall = ({
 
   // mainly for TypeScript type narrowing
   if (ret === undefined) {
-    throw new Error("syscall returned undefined ret with errno 0");
+    throw Error("syscall returned undefined ret with errno 0");
   }
 
   return {

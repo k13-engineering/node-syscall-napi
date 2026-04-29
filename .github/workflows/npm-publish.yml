@@ -23,6 +23,6 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - run: npm ci
       - run: npm run build
-      - run: node node_modules/.bin/releasetool merge --local-package-json package.json --npm-package-json package.json.npm --output package.json
+      - run: node node_modules/.bin/releasetool merge --local-package-json package.json --npm-package-json package.npm.json --output package.json
       - run: node node_modules/.bin/releasetool patch-version --package-json package.json --package-version ${{ github.ref_name }}
       - run: npm publish

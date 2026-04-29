@@ -4,9 +4,7 @@
   "description": "Node.js module to perform synchronous syscalls",
   "main": "dist/lib/index.js",
   "files": [
-    "dist/**/*",
-    "native/**/*",
-    "binding.gyp"
+    "dist"
   ],
   "repository": {
     "type": "git",
@@ -18,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/k13-engineering/node-syscall-napi/issues"
   },
-  "homepage": "https://github.com/k13-engineering/node-syscall-napi#readme"
+  "homepage": "https://github.com/k13-engineering/node-syscall-napi#readme",
+  "publishConfig": {
+    "access": "public"
+  }
 }

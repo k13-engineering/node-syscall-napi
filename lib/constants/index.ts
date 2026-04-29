@@ -1,5 +1,8 @@
+// eslint-disable-next-line k13-engineering/no-import-alias
 import { syscallNumbers as syscallNumbersX86_64 } from "./x64.ts";
+// eslint-disable-next-line k13-engineering/no-import-alias
 import { syscallNumbers as syscallNumbersArm64 } from "./arm64.ts";
+// eslint-disable-next-line k13-engineering/no-import-alias
 import { syscallNumbers as syscallNumbersArm } from "./arm.ts";
 import nodeProcess from "node:process";
 

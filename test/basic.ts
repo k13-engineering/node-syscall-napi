@@ -1,8 +1,6 @@
-/* global describe */
-/* global it */
-
 import assert from "assert";
 import { syscall, syscallNumbers } from "../lib/index.ts";
+import { describe, it } from "mocha";
 
 describe("basic", () => {
   it("should run getpid() correctly", () => {
