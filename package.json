@@ -2,7 +2,7 @@
   "type": "module",
   "main": "lib/index.ts",
   "scripts": {
-    "build": "rm -rf dist/ && deno-node-build --root . --out dist/ --entry lib/index.ts && sh tools/packing/build.sh",
+    "build": "sh tools/packing/build.sh && rm -rf dist/ && deno-node-build --root . --out dist/ --entry lib/index.ts",
     "test": "c8 --reporter lcov --reporter html --reporter text mocha test/**/*.ts",
     "lint": "eslint .",
     "type-check": "tsc --noEmit",
