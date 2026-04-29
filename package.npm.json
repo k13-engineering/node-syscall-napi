@@ -19,5 +19,6 @@
   "homepage": "https://github.com/k13-engineering/node-syscall-napi#readme",
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "gypfile": false
 }
