@@ -8,6 +8,8 @@ jobs:
     name: Continous integration tests
     steps:
       - uses: actions/checkout@v4
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
