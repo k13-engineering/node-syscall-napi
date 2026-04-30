@@ -1,4 +1,4 @@
-import { loadAddonFromMemory } from "./load-addon-from-memory.ts";
+import { createDefaultAddonLoader } from "@k13engineering/addon-loader";
 import { syscallAddonArm64 } from "./generated/syscall-arm64.ts";
 import { syscallAddonX64 } from "./generated/syscall-x64.ts";
 import nodeProcess from "node:process";
@@ -11,6 +11,8 @@ const addonBinariesByArch: Partial<{ [key in NodeJS.Architecture]: Uint8Array }>
   x64: syscallAddonX64,
   arm64: syscallAddonArm64,
 };
+
+const addonLoader = createDefaultAddonLoader();
 
 let loadedAddon: TSyscallAddon | undefined = undefined;
 
@@ -29,7 +31,7 @@ const syscall_sync: TSyscallAddon["syscall_sync"] = (...args) => {
     throw Error(`unsupported architecture: ${nodeProcess.arch}`);
   }
 
-  const { error, addon } = loadAddonFromMemory({ addonAsBuffer: addonBinary });
+  const { error, addon } = addonLoader.loadAddonFromMemory({ addonAsBuffer: addonBinary });
   if (error !== undefined) {
     throw Error(`failed to load native addon from memory: ${error.message}`);
   }

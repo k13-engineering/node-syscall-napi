@@ -21,6 +21,6 @@
     "typescript": "^6.0.3"
   },
   "dependencies": {
-
+    "@k13engineering/addon-loader": "^0.0.2"
   }
 }
